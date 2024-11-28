@@ -1,0 +1,7 @@
+{
+  "name": "bird-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
