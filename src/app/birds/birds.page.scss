@@ -1,0 +1,18 @@
+/* Modo normal */
+ion-content {
+    --ion-background-color: var(--ion-background-color, #ffffff);
+    --ion-text-color: var(--ion-text-color, #000000);
+  }
+  
+  /* Modo oscuro */
+  :host(.dark) {
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+    --ion-toolbar-background: #1e1e1e;
+  }
+  
+  ion-toolbar {
+    --background: var(--ion-toolbar-background, #ffffff);
+    --color: var(--ion-text-color, #000000);
+  }
+  
