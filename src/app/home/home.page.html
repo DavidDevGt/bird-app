@@ -1,19 +1,80 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-label position="stacked">Nombre Completo</ion-label>
-    <ion-input type="text" [(ngModel)]="nombreCompleto"></ion-input>
-  </ion-item>
+  <form (ngSubmit)="loadBirds()" #form="ngForm">
+    <ion-grid>
+      <!-- Campo de Nombre Completo -->
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked" aria-label="Nombre completo requerido">
+              Nombre Completo
+            </ion-label>
+            <ion-input
+              type="text"
+              [(ngModel)]="nombreCompleto"
+              name="nombreCompleto"
+              required
+              minlength="3"
+              #nombre="ngModel"
+              aria-required="true"
+            ></ion-input>
+            <ion-note
+              slot="error"
+              color="danger"
+              *ngIf="nombre.invalid && nombre.touched"
+            >
+              El nombre debe tener al menos 3 caracteres.
+            </ion-note>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
-  <ion-item>
-    <ion-label position="stacked">Número de Carnet</ion-label>
-    <ion-input type="text" [(ngModel)]="numeroCarnet"></ion-input>
-  </ion-item>
+      <!-- Campo de Número de Carnet -->
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked" aria-label="Número de carnet requerido">
+              Número de Carnet
+            </ion-label>
+            <ion-input
+              type="text"
+              [(ngModel)]="numeroCarnet"
+              name="numeroCarnet"
+              required
+              pattern="^[0-9]+$"
+              #numero="ngModel"
+              aria-required="true"
+            ></ion-input>
+            <ion-note
+              slot="error"
+              color="danger"
+              *ngIf="numero.invalid && numero.touched"
+            >
+              Solo se permiten números en este campo.
+            </ion-note>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
-  <ion-button expand="full" (click)="loadBirds()">Cargar</ion-button>
+      <!-- Botón de Cargar -->
+      <ion-row>
+        <ion-col>
+          <ion-button
+            type="submit"
+            expand="full"
+            [disabled]="form.invalid || isLoading"
+            (click)="loadBirds()"
+          >
+            <ion-spinner *ngIf="isLoading" slot="start"></ion-spinner>
+            Cargar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

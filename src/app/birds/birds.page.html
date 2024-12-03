@@ -11,18 +11,16 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list *ngIf="birds && birds.length > 0">
+  <ion-list *ngIf="birds.length > 0; else noBirdsTemplate">
     <div *ngFor="let bird of birds" class="bird-container">
       <ion-item lines="none" class="bird-item">
-        <!-- Imagen del sonograma -->
         <div class="bird-thumbnail">
           <img 
-            [src]="bird.sono?.med || 'assets/default-placeholder.png'" 
+            [src]="bird.sono?.med || placeholderImage" 
             alt="Sonograma del ave" 
             (error)="onImageError($event)"
           />
         </div>
-        <!-- Información del ave -->
         <div class="bird-info">
           <p><strong>Familia:</strong> {{ bird.gen }} {{ bird.sp }}</p>
           <p><strong>Nombre:</strong> {{ bird.en }}</p>
@@ -31,12 +29,11 @@
         </div>
       </ion-item>
 
-      <!-- Controles de Audio -->
       <div class="audio-controls">
-        <ion-button fill="outline" (click)="playSound(bird)">
+        <ion-button fill="outline" (click)="playSound(bird)" [disabled]="bird.isPlaying">
           <ion-icon name="play-outline"></ion-icon>
         </ion-button>
-        <ion-button fill="outline" (click)="pauseSound(bird)">
+        <ion-button fill="outline" (click)="pauseSound(bird)" [disabled]="!bird.isPlaying">
           <ion-icon name="pause-outline"></ion-icon>
         </ion-button>
         <ion-button fill="outline" (click)="stopSound(bird)">
@@ -44,7 +41,6 @@
         </ion-button>
       </div>
 
-      <!-- Progreso -->
       <div class="progress-container">
         <ion-progress-bar [value]="bird.progress / 100"></ion-progress-bar>
         <div class="time-info">
@@ -52,78 +48,137 @@
           <span>{{ bird.duration }}</span>
         </div>
       </div>
-
-      <!-- Divisor -->
-      <div class="custom-divider"></div>
     </div>
   </ion-list>
 
-  <ion-item *ngIf="birds.length === 0">
-    <ion-label>No se encontraron grabaciones de aves.</ion-label>
-  </ion-item>
+  <ng-template #noBirdsTemplate>
+    <ion-item>
+      <ion-label>No se encontraron grabaciones de aves.</ion-label>
+    </ion-item>
+  </ng-template>
 </ion-content>
 
 <style>
   .content {
     background-color: var(--ion-background-color);
   }
-  
+
   .bird-container {
-    margin: 16px;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 12px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     background-color: var(--ion-item-background);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  
+
+  .bird-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
   .bird-item {
     display: flex;
     align-items: flex-start;
-    padding: 10px 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ion-color-light);
   }
-  
+
   .bird-thumbnail {
-    width: 80px;
-    height: 80px;
+    flex-shrink: 0;
+    width: 90px;
+    height: 90px;
     margin-right: 16px;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: var(--ion-color-light);
   }
-  
+
   .bird-thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    background-color: var(--ion-color-light);
+    transition: transform 0.3s ease;
   }
-  
+
+  .bird-thumbnail img:hover {
+    transform: scale(1.1);
+  }
+
   .bird-info {
     flex: 1;
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.5;
     color: var(--ion-text-color);
   }
-  
+
+  .bird-info p {
+    margin: 4px 0;
+  }
+
   .audio-controls {
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 10px;
+    justify-content: space-around;
+    margin-top: 16px;
+    gap: 16px;
   }
-  
+
+  .audio-controls ion-button {
+    --border-radius: 50%;
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+
   .progress-container {
-    margin-top: 10px;
+    margin-top: 12px;
   }
-  
+
+  ion-progress-bar {
+    --progress-background: var(--ion-color-light);
+    --progress-bar-background: var(--ion-color-primary);
+    height: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
   .time-info {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    margin-top: 4px;
+    font-size: 13px;
     color: var(--ion-color-medium);
   }
-  
+
   .custom-divider {
     height: 1px;
     background-color: var(--ion-color-light);
-    margin-top: 16px;
-  }  
+    margin: 20px 0;
+    opacity: 0.6;
+  }
+
+  @media (min-width: 768px) {
+    .bird-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .bird-item {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .bird-info {
+      font-size: 16px;
+    }
+
+    .audio-controls {
+      margin-top: 0;
+    }
+
+    .custom-divider {
+      display: none;
+    }
+  }
 </style>
