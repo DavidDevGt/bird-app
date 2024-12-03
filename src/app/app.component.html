@@ -1,3 +1,14 @@
 <ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Birds App</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="toggleTheme()">
+          <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

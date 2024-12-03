@@ -1,0 +1,12 @@
+ion-toolbar {
+  background-color: var(--ion-toolbar-background);
+  color: var(--ion-toolbar-text-color);
+}
+
+ion-title {
+  color: var(--ion-toolbar-text-color);
+}
+
+ion-button ion-icon {
+  color: var(--ion-toolbar-text-color);
+}
