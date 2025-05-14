@@ -33,7 +33,7 @@
         <ion-button fill="outline" (click)="playSound(bird)" [disabled]="bird.isPlaying">
           <ion-icon name="play-outline"></ion-icon>
         </ion-button>
-        <ion-button fill="outline" (click)="pauseSound(bird)" [disabled]="!bird.isPlaying">
+        <ion-button fill="outline" (click)="pauseSound(bird)" [disabled]="!bird.isPlaying" [class.active-control]="bird.isPlaying">
           <ion-icon name="pause-outline"></ion-icon>
         </ion-button>
         <ion-button fill="outline" (click)="stopSound(bird)">
@@ -127,6 +127,13 @@
     --border-radius: 50%;
     --padding-start: 12px;
     --padding-end: 12px;
+  }
+
+  .audio-controls .active-control {
+    --background: var(--ion-color-primary);
+    --color: white;
+    --border-color: var(--ion-color-primary);
+    transform: scale(1.1);
   }
 
   .progress-container {

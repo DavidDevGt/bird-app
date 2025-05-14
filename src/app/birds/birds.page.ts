@@ -56,7 +56,10 @@ export class BirdsPage implements OnInit {
   }
 
   pauseSound(bird: any) {
-    bird.howl?.pause();
+    if (bird.howl && bird.isPlaying) {
+      bird.howl.pause();
+      bird.isPlaying = false; // Ensure the state is updated immediately
+    }
   }
 
   stopSound(bird: any) {
@@ -73,7 +76,11 @@ export class BirdsPage implements OnInit {
         bird.isPlaying = true;
         this.updateProgress(bird);
       },
-      onpause: () => (bird.isPlaying = false),
+      onpause: () => {
+        bird.isPlaying = false;
+        // Force UI update in case the event wasn't caught
+        setTimeout(() => {}, 0);
+      },
       onstop: () => {
         bird.isPlaying = false;
         this.resetProgress(bird);
